@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Cherry</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_share_note">ShareNote</string>
+    <string name="title_activity_create_note">CreateNoteActivity</string>
+    <string name="title_activity_create_fiche">CreateFicheActivity</string>
+    <string name="title_activity_edit_note">EditNoteActivity</string>
+    <string name="title_activity_my_account">MyAccountActivity</string>
+</resources>

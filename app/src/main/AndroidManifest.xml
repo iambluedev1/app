@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.cherry.app">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.MyAccountActivity"
+            android:label="@string/title_activity_my_account"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.EditNoteActivity"
+            android:label="@string/title_activity_edit_note"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateFicheActivity"
+            android:label="@string/title_activity_create_fiche"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateNoteActivity"
+            android:label="@string/title_activity_create_note"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ShareNote"
+            android:label="@string/title_activity_share_note"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activities.auth.RegisterActivity"></activity>
+        <activity android:name=".activities.auth.ForgotPasswordActivity" />
+        <activity android:name=".activities.auth.MainActivity" />
+        <activity android:name=".activities.auth.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.auth.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+    </application>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+</manifest>

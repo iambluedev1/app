@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.chinalwb.acke.MainActivity" >
+
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="80"
+        android:title="Share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_edit_title"
+        android:orderInCategory="90"
+        android:title="Edit title"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="100"
+        android:title="Save"
+        app:showAsAction="never" />
+
+</menu>

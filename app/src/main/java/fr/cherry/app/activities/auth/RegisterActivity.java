@@ -27,20 +27,17 @@ import com.google.firebase.firestore.auth.User;
 
 import java.util.logging.Logger;
 
+import fr.cherry.app.Cherry;
 import fr.cherry.app.R;
 import fr.cherry.app.activities.HomeActivity;
 import fr.cherry.app.models.UserModel;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        auth = FirebaseAuth.getInstance();
 
         Button backbtn = findViewById(R.id.back_btn);
         backbtn.setOnClickListener(v -> {
@@ -108,12 +105,9 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        registerbtn.setOnClickListener(v -> auth.createUserWithEmailAndPassword(email.getText().toString(), mdp1.getText().toString())
+        registerbtn.setOnClickListener(v -> Cherry.getInstance().getAuth().createUserWithEmailAndPassword(email.getText().toString(), mdp1.getText().toString())
                 .addOnCompleteListener(RegisterActivity.this, task -> {
-                    Log.d("RegisterActivity", "New user registration: " + task.isSuccessful());
-
                     if (!task.isSuccessful()) {
-                        Log.w("RegisterActivity", "createUserWithEmail:failure", task.getException());
                         if(task.getException() instanceof FirebaseNetworkException) {
                             Toast.makeText(RegisterActivity.this, "Vous devez etre connecté à internet",
                                     Toast.LENGTH_SHORT).show();
@@ -125,9 +119,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        UserModel u = new UserModel(task.getResult().getUser().getUid(), email.getText().toString(), "", "");
-                        db.collection("users").add(u);
+                        UserModel u = new UserModel("", task.getResult().getUser().getUid(), email.getText().toString(), "", "", "");
+                        Cherry.getInstance().getDb().collection("users").add(u);
                         RegisterActivity.this.startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
                         RegisterActivity.this.finish();
                     }

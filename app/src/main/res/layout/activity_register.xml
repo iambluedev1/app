@@ -50,7 +50,8 @@
                 android:id="@+id/mdp1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Mdp" />
+                android:hint="Mdp"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,7 +63,8 @@
                 android:id="@+id/mdp2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Confirmation mdp" />
+                android:hint="Confirmation mdp"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

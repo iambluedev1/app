@@ -30,7 +30,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -55,8 +54,7 @@ public class EditNoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        listModel = Cherry.getInstance().getNotes().stream().filter(u -> u.getId() == intent.getIntExtra("item", 0)).findFirst().get();
-        Log.d("qsd0", intent.getIntExtra("item", 0)+"");
+        listModel = Cherry.getInstance().getNotes(Cherry.getInstance().getAuthenticated().getEmail()).stream().filter(u -> u.getId().equals(intent.getStringExtra("item"))).findFirst().get();
         initToolbar();
     }
 
@@ -168,7 +166,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
             builder.show();
         }else if(menuId == R.id.action_share){
-            Intent intent = new Intent(EditNoteActivity.this, ShareNote.class);
+            Intent intent = new Intent(EditNoteActivity.this, ShareNoteActivity.class);
             intent.putExtra("from", "edit_note");
             intent.putExtra("id", listModel.getId());
             intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -180,6 +178,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         mToolbar.onActivityResult(requestCode, resultCode, data);
     }
 

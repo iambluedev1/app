@@ -17,7 +17,7 @@ import fr.cherry.app.Cherry;
 import fr.cherry.app.R;
 import fr.cherry.app.models.ListModel;
 
-public class ShareNote extends AppCompatActivity {
+public class ShareNoteActivity extends AppCompatActivity {
 
 
     private ListModel note = null;
@@ -29,9 +29,9 @@ public class ShareNote extends AppCompatActivity {
         String from = intent.getStringExtra("from");
 
         if(from.equals("main"))
-            note = Cherry.getInstance().getNotes().get(intent.getIntExtra("index", 0));
+            note = Cherry.getInstance().getNotes(Cherry.getInstance().getAuthenticated().getEmail()).get(intent.getIntExtra("index", 0));
         else if(from.equals("edit_note"))
-            note = Cherry.getInstance().getNotes().stream().filter(u -> u.getId() == intent.getIntExtra("id", 0)).findFirst().get();
+            note = Cherry.getInstance().getNotes(Cherry.getInstance().getAuthenticated().getEmail()).stream().filter(u -> u.getId().equals(intent.getStringExtra("id"))).findFirst().get();
 
         setContentView(R.layout.activity_share_note);
         ImageButton backBtn = findViewById(R.id.imageButton3);
@@ -61,9 +61,9 @@ public class ShareNote extends AppCompatActivity {
         String from = intent.getStringExtra("from");
 
         if(from.equals("main"))
-            startActivity(new Intent(ShareNote.this, HomeActivity.class));
+            startActivity(new Intent(ShareNoteActivity.this, HomeActivity.class));
         else if(from.equals("edit_note")) {
-            Intent newIntent = new Intent(ShareNote.this, EditNoteActivity.class);
+            Intent newIntent = new Intent(ShareNoteActivity.this, EditNoteActivity.class);
             newIntent.putExtra("item", intent.getIntExtra("id", 0));
             newIntent.setFlags(newIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(newIntent);

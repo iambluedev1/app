@@ -43,9 +43,9 @@ public class HomeActivity extends AppCompatActivity implements RapidFloatingActi
         setContentView(R.layout.activity_home);
 
         SwipeMenuListView listView = findViewById(R.id.listNotes);
-        mAdapter = new ListModelAdapter(this);
+        Log.d("HomeActivity", Cherry.getInstance().getAuthenticated().getEmail());
+        mAdapter = new ListModelAdapter(this, Cherry.getInstance().getAuthenticated().getEmail());
         listView.setAdapter(mAdapter);
-
 
         SwipeMenuCreator creator = menu -> {
             SwipeMenuItem shareItem = new SwipeMenuItem(getApplicationContext());
@@ -63,17 +63,18 @@ public class HomeActivity extends AppCompatActivity implements RapidFloatingActi
 
         listView.setMenuCreator(creator);
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            ListModel m = Cherry.getInstance().getNotes().get(position);
+            ListModel m = Cherry.getInstance().getNotes(Cherry.getInstance().getAuthenticated().getEmail()).get(position);
             if(m.getType() == 0){
                 Intent intent = new Intent(HomeActivity.this, EditNoteActivity.class);
                 intent.putExtra("item", m.getId());
                 startActivityForResult(intent, 0);
             }
         });
+
         listView.setOnMenuItemClickListener((position, menu, index) -> {
             switch (index) {
                 case 0:
-                    Intent intent = new Intent(HomeActivity.this, ShareNote.class);
+                    Intent intent = new Intent(HomeActivity.this, ShareNoteActivity.class);
                     intent.putExtra("item", position);
                     intent.putExtra("from", "main");
                     startActivity(intent);
@@ -146,11 +147,10 @@ public class HomeActivity extends AppCompatActivity implements RapidFloatingActi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("qsdqsdqd", "resulllt");
         mAdapter.notifyDataSetChanged();
 
         SwipeMenuListView listView = findViewById(R.id.listNotes);
-        mAdapter = new ListModelAdapter(this);
+        mAdapter = new ListModelAdapter(this, Cherry.getInstance().getAuthenticated().getEmail());
         listView.setAdapter(mAdapter);
     }
 }

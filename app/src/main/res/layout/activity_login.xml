@@ -46,7 +46,8 @@
             android:id="@+id/mdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Votre mot de passe" />
+            android:hint="Votre mot de passe"
+            android:inputType="textPassword"/>
 
         <TextView
             android:id="@+id/mdpOublie"

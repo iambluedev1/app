@@ -16,20 +16,22 @@ public class ListModelAdapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
+    private String email;
 
-    public ListModelAdapter(Context context){
+    public ListModelAdapter(Context context, String email){
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+        this.email = email;
     }
 
     @Override
     public int getCount() {
-        return Cherry.getInstance().getNotes().size();
+        return Cherry.getInstance().getNotes(email).size();
     }
 
     @Override
     public ListModel getItem(int position) {
-        return Cherry.getInstance().getNotes().get(position);
+        return Cherry.getInstance().getNotes(email).get(position);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ListModelAdapter extends BaseAdapter {
         if(Cherry.getInstance().getAuthenticated().getId() == getItem(position).getOwner().getId())
             owner.setText("Créer par vous");
         else
-            owner.setText("Créer par " + getItem(position).getOwner().getLastname() + " " + getItem(position).getOwner().getSurname());
+            owner.setText("Créer par " + getItem(position).getOwner().getLastName() + " " + getItem(position).getOwner().getSurname());
         ImageView img = view.findViewById(R.id.accessNote);
 
         if(getItem(position).getType() == 0)

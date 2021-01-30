@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".activities.ShareNote" android:screenOrientation="portrait">
+    tools:context=".activities.ShareNoteActivity" android:screenOrientation="portrait">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

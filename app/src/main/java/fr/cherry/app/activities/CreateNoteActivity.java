@@ -54,9 +54,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.setOnClickListener(v -> Log.d("dsqd", "sqdqsdsqd"));
         initToolbar();
     }
 
@@ -100,56 +99,35 @@ public class CreateNoteActivity extends AppCompatActivity {
         mEditText = this.findViewById(R.id.arEditText);
         mEditText.setToolbar(mToolbar);
 
-        setHtml();
-
         initToolbarArrow();
-    }
-
-    private void setHtml() {
-        String html = "<p style=\"text-align: center;\"><strong>New Feature in 0.1.2</strong></p>\n" +
-                "<p style=\"text-align: center;\">&nbsp;</p>\n" +
-                "<p style=\"text-align: left;\"><span style=\"color: #3366ff;\">In this release, you have a new usage with ARE.</span></p>\n" +
-                "<p style=\"text-align: left;\">&nbsp;</p>\n" +
-                "<p style=\"text-align: left;\"><span style=\"color: #3366ff;\">AREditText + ARE_Toolbar, you are now able to control the position of the input area and where to put the toolbar at and, what ToolItems you'd like to have in the toolbar. </span></p>\n" +
-                "<p style=\"text-align: left;\">&nbsp;</p>\n" +
-                "<p style=\"text-align: left;\"><span style=\"color: #3366ff;\">You can not only define the Toolbar (and it's style), you can also add your own ARE_ToolItem with your style into ARE.</span></p>\n" +
-                "<p style=\"text-align: left;\">&nbsp;</p>\n" +
-                "<p style=\"text-align: left;\"><span style=\"color: #ff00ff;\"><em><strong>Why not give it a try now?</strong></em></span></p>";
-        mEditText.fromHtml(html);
     }
 
     private void initToolbarArrow() {
         final ImageView imageView = this.findViewById(R.id.arrow);
         if (this.mToolbar instanceof ARE_ToolbarDefault) {
-            ((ARE_ToolbarDefault) mToolbar).getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged() {
-                    int scrollX = ((ARE_ToolbarDefault) mToolbar).getScrollX();
-                    int scrollWidth = ((ARE_ToolbarDefault) mToolbar).getWidth();
-                    int fullWidth = ((ARE_ToolbarDefault) mToolbar).getChildAt(0).getWidth();
+            ((ARE_ToolbarDefault) mToolbar).getViewTreeObserver().addOnScrollChangedListener(() -> {
+                int scrollX = ((ARE_ToolbarDefault) mToolbar).getScrollX();
+                int scrollWidth = ((ARE_ToolbarDefault) mToolbar).getWidth();
+                int fullWidth = ((ARE_ToolbarDefault) mToolbar).getChildAt(0).getWidth();
 
-                    if (scrollX + scrollWidth < fullWidth) {
-                        imageView.setImageResource(R.drawable.ic_arrow_forward_24px);
-                        scrollerAtEnd = false;
-                    } else {
-                        imageView.setImageResource(R.drawable.ic_arrow_back_24px);
-                        scrollerAtEnd = true;
-                    }
+                if (scrollX + scrollWidth < fullWidth) {
+                    imageView.setImageResource(R.drawable.ic_arrow_forward_24px);
+                    scrollerAtEnd = false;
+                } else {
+                    imageView.setImageResource(R.drawable.ic_arrow_back_24px);
+                    scrollerAtEnd = true;
                 }
             });
         }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (scrollerAtEnd) {
-                    ((ARE_ToolbarDefault) mToolbar).smoothScrollBy(-Integer.MAX_VALUE, 0);
-                    scrollerAtEnd = false;
-                } else {
-                    int hsWidth = ((ARE_ToolbarDefault) mToolbar).getChildAt(0).getWidth();
-                    ((ARE_ToolbarDefault) mToolbar).smoothScrollBy(hsWidth, 0);
-                    scrollerAtEnd = true;
-                }
+        imageView.setOnClickListener(view -> {
+            if (scrollerAtEnd) {
+                ((ARE_ToolbarDefault) mToolbar).smoothScrollBy(-Integer.MAX_VALUE, 0);
+                scrollerAtEnd = false;
+            } else {
+                int hsWidth = ((ARE_ToolbarDefault) mToolbar).getChildAt(0).getWidth();
+                ((ARE_ToolbarDefault) mToolbar).smoothScrollBy(hsWidth, 0);
+                scrollerAtEnd = true;
             }
         });
     }
@@ -167,8 +145,11 @@ public class CreateNoteActivity extends AppCompatActivity {
             String html = this.mEditText.getHtml();
             if(listModel == null)
                 listModel = Cherry.getInstance().createNote(html);
-            else
+            else {
                 listModel.setText(html);
+                listModel.save();
+            }
+
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -177,6 +158,7 @@ public class CreateNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         mToolbar.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -187,11 +169,12 @@ public class CreateNoteActivity extends AppCompatActivity {
         String html = this.mEditText.getHtml();
         if(listModel == null)
             listModel = Cherry.getInstance().createNote(html);
-        else
+        else {
             listModel.setText(html);
+            listModel.save();
+        }
 
         Intent intent=new Intent();
-        Log.d("qsqd", "dfqsdqd");
         setResult(RESULT_OK, intent);
         finish();
     }

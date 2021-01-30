@@ -25,19 +25,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fr.cherry.app.Cherry;
 import fr.cherry.app.R;
 import fr.cherry.app.activities.HomeActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        auth = FirebaseAuth.getInstance();
 
         Button backbtn = findViewById(R.id.back_btn);
         backbtn.setOnClickListener(v -> {
@@ -91,20 +88,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-        loginBtnA.setOnClickListener(v -> auth.signInWithEmailAndPassword(email.getText().toString(), mdp.getText().toString())
+        loginBtnA.setOnClickListener(v -> Cherry.getInstance().getAuth().signInWithEmailAndPassword(email.getText().toString(), mdp.getText().toString())
             .addOnCompleteListener(LoginActivity.this, task -> {
                 if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("LoginActivity", "signInWithEmail:success");
-                    FirebaseUser user = auth.getCurrentUser();
-                    Log.d("LoginActivity", user.getEmail());
-                    LoginActivity.this.startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                    LoginActivity.this.finish();
+                    FirebaseUser user = Cherry.getInstance().getAuth().getCurrentUser();
+                    Cherry.getInstance().setAuthenticated(u -> {
+                        Log.d("authenticated", u.getEmail());
+                        LoginActivity.this.startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        LoginActivity.this.finish();
+                    });
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("LoginActivity", "signInWithEmail:failure", task.getException());
                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }
